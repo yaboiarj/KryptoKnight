@@ -1,1 +1,2 @@
-"# KryptoKnight" 
+# KryptoKnight
+Simple Decentralized Application Project

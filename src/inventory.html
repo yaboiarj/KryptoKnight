@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Market - Krypto Knight</title>
+  <link href="css/main.css" rel="stylesheet" >
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav>
+    <a id=logo href="index.html">KryptoKnight</a>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="market.html">Market</a></li>
+        <li><a href="adventure.html">Adventure</a></li>
+        <li><a href="inventory.html">Inventory</a></li>
+      </ul>
+  </nav>
+
+  <div class="knight-container" style="padding: 10px">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-push-2">
+        <div id="loader-knight">
+          <p class="text-center">Loading...</p>
+        </div>
+        <div id="content-knight" style="display: none;">
+            <div id="knightsResult" class="row">
+              <!-- KNIGHTS LOAD HERE -->
+            </div>
+          <hr/>
+          
+          <div id="knightTemplate" style="display: none;">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title-knight"></h4>
+                </div>
+                <div class="panel-body">
+                  <img alt="image" class="img-rounded img-center" style="width: 100%;" src="images/knight-1.jpg" data-holder-rendered="true">
+                  <br/><br/>
+                  <strong>Level</strong>: <span class="knight-level"></span><br/>
+                  <strong>Exp</strong>: <span class="knight-exp"></span><br/>
+                  <strong>Title</strong>: <span class="knight-title"></span><br/><br/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="ticket-container" style="padding: 10px">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-push-2">
+        <div id="loader-ticket">
+          <p class="text-center">Loading...</p>
+        </div>
+        <div id="content-ticket" style="display: none;">
+            <div id="ticketsResult" class="row">
+              <!-- TICKETS LOAD HERE -->
+            </div>
+          <hr/>
+          <div id="ticketTemplate" style="display: none;">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title-ticket"></h4>
+                </div>
+                <div class="panel-body">
+                  <img alt="image" class="img-rounded img-center" style="width: 100%;" src="images/ticket-1.png" data-holder-rendered="true">
+                  <br/><br/>
+                  <strong>Use Limit</strong>: <span class="ticket-use-limit"></span><br/>
+                  <strong>Description</strong>: <span class="ticket-description"></span><br/><br/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p id="accountAddress" class="text-center"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-copyright text-center py-5">© 2018 Project Link:
+      <a href="https://github.com/yaboiarj/KryptoKnight"> KryptoKnight </a>
+    </div>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/web3.min.js"></script>
+  <script src="js/truffle-contract.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

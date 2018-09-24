@@ -4,19 +4,21 @@ App = {
   account: '0x0',
 
   init: function() {
+    $("#loader").hide();
+    $("#account-error").hide();
+    $("#alert").hide();
     return App.initWeb3();
   },
 
   initWeb3: function() {
-    // TODO: refactor conditional
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
       App.web3Provider = web3.currentProvider;
       web3 = new Web3(web3.currentProvider);
     } else {
-      // Specify default instance if no web3 instance provided
-      App.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
-      web3 = new Web3(App.web3Provider);
+      const metamaskErrMsg = '<strong>Required MetaMask!</strong> You should install MetaMask browser extension <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank" class="alert-link">here</a>';
+      $("#alert").addClass("alert-danger").append(metamaskErrMsg);
+      $("#alert").show();
     }
     return App.initContract();
   },
@@ -28,88 +30,99 @@ App = {
       // connect provider to interact with contract
       App.contracts.KnightAdventure.setProvider(App.web3Provider);
 
-    return App.render();
-    //return App.bindEvents();
+      return App.initAccount();
     });
   },
 
-  /*
-  bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
+  initAccount: function() {
+    // load account data
+    web3.eth.getAccounts(function(err, accounts) {
+      if (err !== null) {
+        console.error("An error occurred: " + err);
+      }
+      else if (accounts.length == 0) {
+        const accountErrMsg = '<strong>Login MetaMask!</strong> Login your metamask account to proceed.'
+        $("#account-error").addClass("alert-info").append(accountErrMsg);
+        $("#account-error").show();
+      }
+      else {
+        web3.eth.getCoinbase(function(err, account) {
+          if (err === null) {
+            App.account = account;
+            return App.render();
+          }
+        })
+      }
+    });
   },
-  */
 
   render: function() {
-    var knightAdventureInstance ;
-    var loaderKnight = $("#loader-knight");
-    var contentKnight = $("#content-knight");
+    let knightAdventureInstance;
+    let loader = $("#loader"); loader.append('<p class="text-center">Your inventory is loading... Please wait.</p>');
+    let contentKnight = $("#content-knight");
+    let contentTicket = $("#content-ticket");
 
-    var loaderTicket = $("#loader-ticket");
-    var contentTicket = $("#content-ticket");
-
-    loaderKnight.show();
+    loader.show();
     contentKnight.hide();
-
-    loaderTicket.show();
     contentTicket.hide();
-
-    // load account data
-    web3.eth.getCoinbase(function(err, account) {
-      if (err === null) {
-        App.account = account;
-        $("#accountAddress").html("Your Account: " + account);
-      }
-    })
 
     // load contract data
     App.contracts.KnightAdventure.deployed().then(function(instance) {
       knightAdventureInstance = instance;
  
-      var knightsResult = $("#knightsResult");
+      let knightsResult = $("#knightsResult");
       knightsResult.empty();
 
       knightAdventureInstance.getKnightsByOwner(App.account).then(function(intArray) {
-        for (var i = 0; i < intArray.length; i++) {
-          knightAdventureInstance.getKnightDetails(intArray[i]).then(function(knight) {
+        for (let i = 0; i < intArray.length; i++) {
+
+          let index = intArray[i].toNumber();
+
+          knightAdventureInstance.getKnightDetails(index).then(function(knight) {
             knight = knight.toString();
             knight = knight.split(',');
 
-            var name = knight[0];
-            var level = knight[1];
-            var currExp = knight[2];
-            var neededExp = knight[3];
-            var title = knight[4];
-            
+            let name = knight[0];
+            let level = knight[1];
+            let currExp = knight[2];
+            let neededExp = knight[3];
+            let title = knight[4];
+
             // Render knight Result
-            var knightTemplate = $("#knightTemplate");
-            knightTemplate.find('.panel-title-knight').text(name);
+            let knightTemplate = $("#knightTemplate");
+            knightTemplate.find('.panel-title-knight').text('#' + index);
+            knightTemplate.find('.knight-name').text(name);
             knightTemplate.find('.knight-level').text(level);
-            knightTemplate.find('.knight-exp').text(currExp);
+            knightTemplate.find('.knight-exp').text(currExp + ' / ' + neededExp);
             knightTemplate.find('.knight-title').text(title);
             knightsResult.append(knightTemplate.html());
           })
         }
       })
 
-      loaderKnight.hide();
+      loader.hide();
       contentKnight.show();
 
-      var ticketsResult = $("#ticketsResult");
+      let ticketsResult = $("#ticketsResult");
       ticketsResult.empty();
 
       knightAdventureInstance.getTicketsByOwner(App.account).then(function(intArray) {
-        for (var i = 0; i < intArray.length; i++) {
-          knightAdventureInstance.getTicketDetails(intArray[i]).then(function(ticket) {
+        for (let i = 0; i < intArray.length; i++) {
+
+          let index = intArray[i].toNumber();
+
+          knightAdventureInstance.getTicketDetails(index).then(function(ticket) {
             ticket = ticket.toString();
             ticket = ticket.split(',');
 
-            var gate = 'Gate Access: ' + ticket[0];
-            var useLimit = ticket[1];
-            var description = ticket[2];
+            let gate = ticket[0];
+            let useLimit = ticket[1];
+            let description = ticket[2];
 
             // Render ticket result
-            var ticketTemplate = $("#ticketTemplate");
-            ticketTemplate.find('.panel-title-ticket').text(gate);
+            let ticketTemplate = $("#ticketTemplate");
+            ticketTemplate.find('.panel-title-ticket').text('#' + index);
+            ticketTemplate.find('.ticket-gate').text(gate);
             ticketTemplate.find('.ticket-use-limit').text(useLimit);
             ticketTemplate.find('.ticket-description').text(description);
             ticketsResult.append(ticketTemplate.html());
@@ -117,7 +130,7 @@ App = {
         }
       })
 
-      loaderTicket.hide();
+      loader.hide();
       contentTicket.show();
     })
   },

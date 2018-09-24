@@ -19,6 +19,7 @@ nav ul {
 
 nav ul li {
     float: left;
+    font-size: 17px;
 }
 
 nav ul li a {
@@ -59,6 +60,30 @@ footer {
     right: 0;
     bottom: 0;
     left: 0;
-    padding-bottom: 3rem;
+    padding: 3rem 0;
     text-align: center;
+}
+
+/* adventure.html */
+.adventure-container {
+    margin-left: 14%;
+    margin-right: 14%;
+    width: 72%;
+    display: grid;
+    grid-template-columns: 57% 43%;
+    grid-row-gap: 2em;
+}
+
+img {
+    object-fit: cover;
+    width: 100%
+}
+
+.adventure-container > div {
+    padding: 2.5em;
+    font-size: 16px;
+}
+
+.adventure-container > div > p {
+    font-size: calc(.6vw + .6vh);
 }

@@ -6,6 +6,7 @@ import "./KnightHelper.sol";
 contract KnightAdventure is KnightHelper {
     
     using SafeMath8 for uint8;
+    using SafeMath16 for uint16;
     using SafeMath32 for uint32;
     
     uint maxLevel = 250;
@@ -45,17 +46,18 @@ contract KnightAdventure is KnightHelper {
     
     //add 1 level to the knight
     function _levelUp(Knight storage _knight) private {
-        _knight.Level = _knight.Level.add(1);
+       // _knight.Level = _knight.Level.add(level);
         //set CurrentExp by subtracting the CurrentExp by ExpNeededForNextLevel
         _knight.CurrentExp = _knight.CurrentExp.sub(_knight.ExpNeededForNextLevel);
         //add 100exp for next ExpNeededForNextLevel
         _knight.ExpNeededForNextLevel = _knight.ExpNeededForNextLevel.add(50);
     }
     
-    function _loot(uint _upto) private {
+    function _loot(uint8 _upto) private {
         //lootSuccessRate for knight
         if (lootSuccessRate >= 50 && lootSuccessRate <= 80) {
-            _createKnight("New Knight Acquired");
+            uint8 level = _upto * 5;
+            _createKnight("New Knight Acquired", level);
         }
         
         //lootSuccessRate for ticket
@@ -73,7 +75,7 @@ contract KnightAdventure is KnightHelper {
         //require that ticket has still UseLimit
         require(ticket.UseLimit >= 1);
         //reduce the UseLimit of ticket by 1
-        ticket.UseLimit = ticket.UseLimit.sub(1);
+        ticket.UseLimit--;
         
         if (knight.Level < maxLevel) {
             _expReward(knight, ticket);

@@ -114,10 +114,6 @@ library SafeMath16 {
   }
 }
 
-/**
- * @title SafeMath16
- * @dev SafeMath library implemented for uint16
- */
 library SafeMath8 {
 
   function mul(uint8 a, uint8 b) internal pure returns (uint8) {

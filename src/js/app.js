@@ -146,6 +146,8 @@ App = {
      */
   },
 
+  
+
   getPagination: function (table) {
     $('#maxRows').on('change', function () {
       $('.pagination').html('');

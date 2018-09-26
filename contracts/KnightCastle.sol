@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 
 import "./SafeMath.sol";
-//import "./Ownable.sol";
+import "./Ownable.sol";
 
-contract KnightCastle {
+contract KnightCastle is Ownable {
     
     struct Knight {
         string Name;
@@ -29,7 +29,14 @@ contract KnightCastle {
     constructor() internal {
         _createKnight("Genesis", 250);
         _createKnight("Another 1", 1);
-        //owner = msg.sender;
+        _createKnight("3", 1);
+        _createKnight("4", 1);
+        _createKnight("5", 1);
+        _createKnight("6", 1);
+        _createKnight("7", 1);
+        _createKnight("8", 1);
+        _createKnight("9", 1); //test
+        owner = msg.sender;
     }
     
     function _createKnight(string _name, uint8 _level) internal {

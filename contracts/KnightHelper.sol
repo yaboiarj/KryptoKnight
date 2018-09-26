@@ -46,9 +46,9 @@ contract KnightHelper is KnightCastle, KnightTicket {
     function getKnightsByOwner(address _owner) external view returns(uint[]) {
         uint[] memory result = new uint[](ownerKnightCount[_owner]);
         uint counter = 0;
-        for (uint i = 1; i < knights.length; i++) {
+        for (uint i = 0; i < knights.length; i++) {
             if (knightIndexToOwner[i] == _owner) {
-                result[counter] = 1;
+                result[counter] = i;
                 counter++;
             }
         }
@@ -64,9 +64,9 @@ contract KnightHelper is KnightCastle, KnightTicket {
     function getTicketsByOwner(address _owner) external view returns(uint[]) {
         uint[] memory result = new uint[](ownerTicketCount[_owner]);
         uint counter = 0;
-        for (uint i = 1; i < tickets.length; i++) {
+        for (uint i = 0; i < tickets.length; i++) {
             if (ticketIndexToOwner[i] == _owner) {
-                result[counter] = 1;
+                result[counter] = i;
                 counter++;
             }
         }

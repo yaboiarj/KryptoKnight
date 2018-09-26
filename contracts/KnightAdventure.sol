@@ -56,7 +56,7 @@ contract KnightAdventure is KnightHelper {
     function _loot(uint8 _upto) private {
         //lootSuccessRate for knight
         if (lootSuccessRate >= 50 && lootSuccessRate <= 80) {
-            uint8 level = _upto * 5;
+            uint8 level = _upto * 10;
             _createKnight("New Knight Acquired", level);
         }
         

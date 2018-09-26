@@ -3,14 +3,14 @@ App = {
   contracts: {},
   account: '0x0',
 
-  init: function() {
+  init: function () {
     $("#loader").hide();
     $("#account-error").hide();
     $("#alert").hide();
     return App.initWeb3();
   },
 
-  initWeb3: function() {
+  initWeb3: function () {
     if (typeof web3 !== 'undefined') {
       // If a web3 instance is already provided by Meta Mask.
       App.web3Provider = web3.currentProvider;
@@ -23,8 +23,8 @@ App = {
     return App.initContract();
   },
 
-  initContract: function() {
-    $.getJSON("KnightAdventure.json", function(knightAdventure) {
+  initContract: function () {
+    $.getJSON("KnightAdventure.json", function (knightAdventure) {
       // instantiate a new truffle contract from the artifact
       App.contracts.KnightAdventure = TruffleContract(knightAdventure);
       // connect provider to interact with contract
@@ -34,19 +34,17 @@ App = {
     });
   },
 
-  initAccount: function() {
+  initAccount: function () {
     // load account data
-    web3.eth.getAccounts(function(err, accounts) {
+    web3.eth.getAccounts(function (err, accounts) {
       if (err !== null) {
         console.error("An error occurred: " + err);
-      }
-      else if (accounts.length == 0) {
+      } else if (accounts.length == 0) {
         const accountErrMsg = '<strong>Login MetaMask!</strong> Login your metamask account to proceed.'
         $("#account-error").addClass("alert-info").append(accountErrMsg);
         $("#account-error").show();
-      }
-      else {
-        web3.eth.getCoinbase(function(err, account) {
+      } else {
+        web3.eth.getCoinbase(function (err, account) {
           if (err === null) {
             App.account = account;
             return App.render();
@@ -56,9 +54,10 @@ App = {
     });
   },
 
-  render: function() {
+  render: function () {
     let knightAdventureInstance;
-    let loader = $("#loader"); loader.append('<p class="text-center">Your inventory is loading... Please wait.</p>');
+    let loader = $("#loader");
+    loader.append('<p class="text-center">Your inventory is loading... Please wait.</p>');
     let contentKnight = $("#content-knight");
     let contentTicket = $("#content-ticket");
 
@@ -67,18 +66,18 @@ App = {
     contentTicket.hide();
 
     // load contract data
-    App.contracts.KnightAdventure.deployed().then(function(instance) {
+    App.contracts.KnightAdventure.deployed().then(function (instance) {
       knightAdventureInstance = instance;
- 
+
       let knightsResult = $("#knightsResult");
       knightsResult.empty();
 
-      knightAdventureInstance.getKnightsByOwner(App.account).then(function(intArray) {
+      knightAdventureInstance.getKnightsByOwner(App.account).then(function (intArray) {
         for (let i = 0; i < intArray.length; i++) {
 
           let index = intArray[i].toNumber();
 
-          knightAdventureInstance.getKnightDetails(index).then(function(knight) {
+          knightAdventureInstance.getKnightDetails(index).then(function (knight) {
             knight = knight.toString();
             knight = knight.split(',');
 
@@ -89,29 +88,25 @@ App = {
             let title = knight[4];
 
             // Render knight Result
-            let knightTemplate = $("#knightTemplate");
-            knightTemplate.find('.panel-title-knight').text('#' + index);
-            knightTemplate.find('.knight-name').text(name);
-            knightTemplate.find('.knight-level').text(level);
-            knightTemplate.find('.knight-exp').text(currExp + ' / ' + neededExp);
-            knightTemplate.find('.knight-title').text(title);
-            knightsResult.append(knightTemplate.html());
+            let knightTemplate = "<tr><th>" + index + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td></tr>"
+            knightsResult.append(knightTemplate);
           })
         }
       })
 
+      App.getPagination('#mytable');
       loader.hide();
       contentKnight.show();
 
       let ticketsResult = $("#ticketsResult");
       ticketsResult.empty();
 
-      knightAdventureInstance.getTicketsByOwner(App.account).then(function(intArray) {
+      knightAdventureInstance.getTicketsByOwner(App.account).then(function (intArray) {
         for (let i = 0; i < intArray.length; i++) {
 
           let index = intArray[i].toNumber();
 
-          knightAdventureInstance.getTicketDetails(index).then(function(ticket) {
+          knightAdventureInstance.getTicketDetails(index).then(function (ticket) {
             ticket = ticket.toString();
             ticket = ticket.split(',');
 
@@ -121,7 +116,7 @@ App = {
 
             // Render ticket result
             let ticketTemplate = $("#ticketTemplate");
-            ticketTemplate.find('.panel-title-ticket').text('#' + index);
+            ticketTemplate.find('.panel-title-ticket').text('Ticket #' + index);
             ticketTemplate.find('.ticket-gate').text(gate);
             ticketTemplate.find('.ticket-use-limit').text(useLimit);
             ticketTemplate.find('.ticket-description').text(description);
@@ -135,13 +130,13 @@ App = {
     })
   },
 
-  markAdopted: function(adopters, account) {
+  markAdopted: function (adopters, account) {
     /*
      * Replace me...
      */
   },
 
-  handleAdopt: function(event) {
+  handleAdopt: function (event) {
     event.preventDefault();
 
     var petId = parseInt($(event.target).data('id'));
@@ -149,12 +144,55 @@ App = {
     /*
      * Replace me...
      */
-  }
+  },
 
+  getPagination: function (table) {
+    $('#maxRows').on('change', function () {
+      $('.pagination').html('');
+      var trnum = 0;
+      var maxRows = parseInt($(this).val());
+      var totalRows = $(table).find('tbody tr').length;
+      $(table).find('tr:gt(0)').each(function () {
+        trnum++;
+        if (trnum > maxRows) {
+
+          $(this).hide();
+        }
+        if (trnum <= maxRows) {
+          $(this).show();
+        }
+      });
+      if (totalRows > maxRows) {
+        var pagenum = Math.ceil(totalRows / maxRows);
+
+        for (var i = 1; i <= pagenum;) {
+          $('.pagination').append('<li data-page="' + i + '">\
+                        <span>' + i++ + '<span class="sr-only">(current)</span></span>\
+                      </li>').show();
+        }
+      }
+      $('.pagination li:first-child').addClass('active');
+      $('.pagination li').on('click', function () {
+        var pageNum = $(this).attr('data-page');
+        var trIndex = 0;
+        $('.pagination li').removeClass('active');
+        $(this).addClass('active');
+        $(table).find('tr:gt(0)').each(function () {
+          trIndex++;
+
+          if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+            $(this).hide();
+          } else {
+            $(this).show();
+          }
+        });
+      });
+    });
+  },
 };
 
-$(function() {
-  $(window).load(function() {
+$(function () {
+  $(window).load(function () {
     App.init();
   });
 });

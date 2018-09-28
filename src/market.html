@@ -1,73 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Market - Krypto Knight</title>
-  <link href="css/main.css" rel="stylesheet" >
+  <title>Market | Krypto Knight</title>
+  <link href="css/main.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
   <nav>
     <a id=logo href="index.html">KryptoKnight</a>
     <ul>
-        <li><a href="search.html">Search</a></li>
-        <li><a href="market.html">Market</a></li>
-        <li><a href="adventure.html">Adventure</a></li>
-        <li><a href="inventory.html">Inventory</a></li>
-      </ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="market.html">Market</a></li>
+      <li><a href="adventure.html">Adventure</a></li>
+      <li><a href="inventory.html">Inventory</a></li>
+    </ul>
   </nav>
 
-  <div class="market-container" style="padding: 50px">
-    <div class="row">
-      <div class="col-lg-12">
-        <div id="loader">
-          <p class="text-center">Loading...</p>
-        </div>
-        <div id="content" style="display: none;">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Level</th>
-                <th scope="col">CurrentExp</th>
-                <th scope="col">ExpNeededForNextLevel</th>
-                <th scope="col">Title</th>
-              </tr>
-            </thead>
-            <tbody id="knightsResult">
-            </tbody>
-          </table>
-          <hr/>
-          <!--
-          <form onSubmit="App.castVote(); return false;">
-            <div class="form-group">
-              <label for="candidatesSelect">Select Candidate</label>
-              <select class="form-control" id="candidatesSelect">
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Vote</button>
-            <hr />
-          </form>
-          -->
-          <p id="accountAddress" class="text-center"></p>
+  <div class="search-container">
+    <div class="col-sm-4 col-sm-push-4">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="input-group">
+            <input id="search" type="text" class="form-control" placeholder="Search index number...">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" onclick="App.search($('#search').val())">Go!</button>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <footer class="footer">
-    <div class="footer-copyright text-center py-5">© 2018 Project Link:
-      <a href="https://github.com/yaboiarj/KryptoKnight" target="_blank"> KryptoKnight </a>
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-push-2">
+        <table id="search-table" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Knight #</th>
+              <th>Name</th>
+              <th>Level</th>
+              <th>Exp</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          <div style="margin-top:20px">
+              <h3 class="text-muted text-center" style="padding-bottom: 20px">Knight Result</h3>
+            <tbody id="search-knight">
+              <!--search knight result-->
+            </tbody>
+          </div>
+        </table>
+      </div>
     </div>
-  </footer>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/web3.min.js"></script>
-  <script src="js/truffle-contract.js"></script>
-  <script src="js/app.js"></script>
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-push-2">
+        <div id="content-ticket" style="display: none;">
+          <h3 class="text-muted text-center" style="padding-bottom: 20px">Ticket Result</h3>
+          <div id="search-ticket" class="row">
+            <!-- TICKETS LOAD HERE -->
+          </div>
+          <hr />
+          <div id="search-ticket-template" style="display: none;">
+            <div class="col-lg-4 col-sm-offset-4">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title-ticket"></h4>
+                </div>
+                <div class="panel-body">
+                  <img alt="image" class="img-rounded img-center" style="width: 100%;" src="images/ticket-1.png"
+                    data-holder-rendered="true">
+                  <br /><br />
+                  <strong>Gate</strong>: <span class="ticket-gate"></span><br />
+                  <strong>Use Limit</strong>: <span class="ticket-use-limit"></span><br />
+                  <strong>Description</strong>: <span class="ticket-description"></span><br /><br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-copyright text-center py-5">© 2018 Project Link:
+        <a href="https://github.com/yaboiarj/KryptoKnight" target="_blank"> KryptoKnight </a>
+      </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
 </body>
+
 </html>

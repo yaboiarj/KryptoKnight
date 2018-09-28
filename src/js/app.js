@@ -2,6 +2,7 @@ App = {
   web3Provider: null,
   contracts: {},
   account: '0x0',
+  knightAdventureInstance: null,
 
   init: function () {
     $("#loader").hide();
@@ -47,15 +48,21 @@ App = {
         web3.eth.getCoinbase(function (err, account) {
           if (err === null) {
             App.account = account;
-            return App.render();
+            return App.initContractInstance();
           }
         })
       }
     });
   },
 
-  render: function () {
-    let knightAdventureInstance;
+  initContractInstance: function () {
+    App.contracts.KnightAdventure.deployed().then(function (instance) {
+      knightAdventureInstance = instance;
+      return App.loadInventory();
+    });
+  },
+
+  loadInventory: function () {
     let loader = $("#loader");
     loader.append('<p class="text-center">Your inventory is loading... Please wait.</p>');
     let contentKnight = $("#content-knight");
@@ -124,16 +131,48 @@ App = {
           })
         }
       })
-
       loader.hide();
       contentTicket.show();
     })
   },
 
-  markAdopted: function (adopters, account) {
-    /*
-     * Replace me...
-     */
+  search: function (index) {
+    $("#search-knight").empty();
+    $("#search-ticket").empty();
+
+    if (Math.floor(index) == index) {
+      knightAdventureInstance.getKnightDetails(index).then(function (knight) {
+        knight = knight.toString();
+        knight = knight.split(',');
+
+        let name = knight[0];
+        let level = knight[1];
+        let currExp = knight[2];
+        let neededExp = knight[3];
+        let title = knight[4];
+
+        // Render knight Result
+        let knightTemplate = "<tr><th>" + index + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td></tr>"
+        $("#search-knight").append(knightTemplate);
+      })
+
+      knightAdventureInstance.getTicketDetails(index).then(function (ticket) {
+        ticket = ticket.toString();
+        ticket = ticket.split(',');
+
+        let gate = ticket[0];
+        let useLimit = ticket[1];
+        let description = ticket[2];
+
+        // Render ticket result
+        let ticketTemplate = $("#search-ticket-template");
+        ticketTemplate.find('.panel-title-ticket').text('Ticket #' + index);
+        ticketTemplate.find('.ticket-gate').text(gate);
+        ticketTemplate.find('.ticket-use-limit').text(useLimit);
+        ticketTemplate.find('.ticket-description').text(description);
+        $("#search-ticket").append(ticketTemplate.html());
+      })
+    }
   },
 
   handleAdopt: function (event) {
@@ -146,7 +185,9 @@ App = {
      */
   },
 
-  
+  etherToWei: function(amount) {
+    return amount * (10 ** 18);
+  },
 
   getPagination: function (table) {
     $('#maxRows').on('change', function () {

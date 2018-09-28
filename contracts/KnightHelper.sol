@@ -38,6 +38,8 @@ contract KnightHelper is KnightCastle, KnightTicket {
     }
     
     function getKnightDetails(uint _index) external view returns(string, uint, uint, uint, string) {
+        require(_index >= 0);
+        require(_index < knights.length);        
         Knight storage knight = knights[_index];
         return (knight.Name, knight.Level, knight.CurrentExp, knight.ExpNeededForNextLevel, knight.Title);
     }
@@ -56,6 +58,8 @@ contract KnightHelper is KnightCastle, KnightTicket {
     }
 
     function getTicketDetails(uint _index) external view returns(uint, uint, string) {
+        require(_index >= 0);
+        require(_index < tickets.length);
         Ticket storage ticket = tickets[_index];
         return (ticket.Gate, ticket.UseLimit, ticket.Description);
     }

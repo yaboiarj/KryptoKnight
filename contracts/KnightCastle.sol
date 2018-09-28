@@ -29,13 +29,12 @@ contract KnightCastle is Ownable {
     constructor() internal {
         _createKnight("Genesis", 250);
         _createKnight("Another 1", 1);
-        _createKnight("3", 1);
-        _createKnight("4", 1);
-        _createKnight("5", 1);
+        _createKnight("Test 3", 1);
+        _createKnight("Test 4", 1);
+        _createKnight("Test 5", 1);
         _createKnight("6", 1);
-        _createKnight("7", 1);
-        _createKnight("8", 1);
-        _createKnight("9", 1); //test
+        _createKnight("Another 7", 1);
+        _createKnight("8", 1); // test
         owner = msg.sender;
     }
     

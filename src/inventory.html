@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Inventory - Krypto Knight</title>
+  <title>Inventory | Krypto Knight</title>
   <link href="css/main.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
   <nav>
     <a id=logo href="index.html">KryptoKnight</a>
     <ul>
-      <li><a href="search.html">Search</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="market.html">Market</a></li>
       <li><a href="adventure.html">Adventure</a></li>
       <li><a href="inventory.html">Inventory</a></li>
@@ -37,12 +37,12 @@
           <div id="content-knight" style="display: none;">
             <h3 class="text-muted text-center" style="padding-bottom: 20px">Your Knights Collection</h3>
             <h4>Select number of rows</h4>
+            <ul class="pagination" style="float: right"></ul>
             <div class="form-group">
               <select name="state" id="maxRows" class="form-control" style="width:150px">
-                <option value="10">10</option>
                 <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
+                <option value="10">10</option>
+                <option value="5">5</option>
               </select>
             </div>
             <table id="mytable" class="table table-bordered table-striped">
@@ -59,11 +59,6 @@
                 <!--knights result-->
               </tbody>
             </table>
-            <div class="pagination-container">
-              <nav>
-                <ul class="pagination"></ul>
-              </nav>
-            </div>
           </div>
         </div>
       </div>
@@ -96,7 +91,6 @@
               </div>
             </div>
           </div>
-          <p id="accountAddress" class="text-center"></p>
         </div>
       </div>
     </div>

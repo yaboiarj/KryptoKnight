@@ -8,6 +8,7 @@ contract KnightTicket {
         uint8 Gate;
         uint8 UseLimit;
         string Description;
+        bool isInMarket;
     }
 
     Ticket[] tickets;
@@ -27,7 +28,8 @@ contract KnightTicket {
         Ticket memory ticket = Ticket({
             Gate: _gate,
             UseLimit: 5,
-            Description: "Required to access the dungeon gate."
+            Description: "Required to access the dungeon gate.",
+            isInMarket: false
         });
         uint id = tickets.push(ticket) - 1;
         ticketIndexToOwner[id] = msg.sender;

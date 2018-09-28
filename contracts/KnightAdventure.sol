@@ -77,6 +77,10 @@ contract KnightAdventure is KnightHelper {
         //reduce the UseLimit of ticket by 1
         ticket.UseLimit--;
         
+        if (ticket.UseLimit == 0) {
+            delete ticket;
+        }
+
         if (knight.Level < maxLevel) {
             _expReward(knight, ticket);
             //check if knight is ready to level up

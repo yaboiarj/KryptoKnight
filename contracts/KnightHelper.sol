@@ -37,7 +37,7 @@ contract KnightHelper is KnightCastle, KnightTicket {
         //emit TicketRefresh(_ticketId);
     }
     
-    function getKnightDetails(uint _index) external view returns(string, uint, uint, uint, string) {
+    function getKnightDetails(uint _index) public view returns(string, uint, uint, uint, string) {
         require(_index >= 0);
         require(_index < knights.length);        
         Knight storage knight = knights[_index];
@@ -50,14 +50,17 @@ contract KnightHelper is KnightCastle, KnightTicket {
         uint counter = 0;
         for (uint i = 0; i < knights.length; i++) {
             if (knightIndexToOwner[i] == _owner) {
-                result[counter] = i;
-                counter++;
+                //knight is not in the market
+                if (knights[i].isInMarket == false) {
+                    result[counter] = i;
+                    counter++;
+                }
             }
         }
         return result;
     }
 
-    function getTicketDetails(uint _index) external view returns(uint, uint, string) {
+    function getTicketDetails(uint _index) public view returns(uint, uint, string) {
         require(_index >= 0);
         require(_index < tickets.length);
         Ticket storage ticket = tickets[_index];
@@ -70,8 +73,13 @@ contract KnightHelper is KnightCastle, KnightTicket {
         uint counter = 0;
         for (uint i = 0; i < tickets.length; i++) {
             if (ticketIndexToOwner[i] == _owner) {
-                result[counter] = i;
-                counter++;
+                //ticket is not in the market
+                if (tickets[i].isInMarket == false) {
+                    if (tickets[i].UseLimit > 0) {
+                        result[counter] = i;
+                        counter++;
+                    }
+                }
             }
         }
         return result;

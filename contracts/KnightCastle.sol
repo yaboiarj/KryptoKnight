@@ -12,6 +12,7 @@ contract KnightCastle is Ownable {
         uint32 ExpNeededForNextLevel;
         string Title;
         uint ReadyTime;
+        bool isInMarket;
     }
     
     Knight[] knights;
@@ -28,17 +29,11 @@ contract KnightCastle is Ownable {
 
     constructor() internal {
         _createKnight("Genesis", 250);
-        _createKnight("Another 1", 1);
-        _createKnight("Test 3", 1);
-        _createKnight("Test 4", 1);
-        _createKnight("Test 5", 1);
-        _createKnight("6", 1);
-        _createKnight("Another 7", 1);
-        _createKnight("8", 1); // test
+        _createKnight("Test 1", 1);
         owner = msg.sender;
     }
     
-    function _createKnight(string _name, uint8 _level) internal {
+    function _createKnight(string _name, uint8 _level) public {
         uint32 expGoal = (uint32(_level.mul(expNeededForNextLevel)));
         Knight memory knight = Knight({
             Name: _name,
@@ -46,11 +41,16 @@ contract KnightCastle is Ownable {
             CurrentExp: 0,
             ExpNeededForNextLevel: expGoal,
             Title: "Adventurer",
-            ReadyTime: now
+            ReadyTime: now,
+            isInMarket: false
         });
         uint id = knights.push(knight) - 1;
         knightIndexToOwner[id] = msg.sender;
         ownerKnightCount[msg.sender] = ownerKnightCount[msg.sender].add(1);
         emit NewKnight(id, _name);
+    }
+    
+    function knightsLength() public view returns(uint) {
+        return knights.length;
     }
 }

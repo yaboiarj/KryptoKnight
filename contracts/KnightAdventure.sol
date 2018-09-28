@@ -12,7 +12,7 @@ contract KnightAdventure is KnightHelper {
     uint maxLevel = 250;
     event KnightLeveledUp(uint indexed knightId);
     
-    uint dungeonCompleteRuntime = 30 seconds;
+    uint dungeonCompleteRuntime = 5 seconds;
     uint lootSuccessProbability = 50;
     uint lootSuccessRate;
     
@@ -46,7 +46,7 @@ contract KnightAdventure is KnightHelper {
     
     //add 1 level to the knight
     function _levelUp(Knight storage _knight) private {
-       // _knight.Level = _knight.Level.add(level);
+        _knight.Level++;
         //set CurrentExp by subtracting the CurrentExp by ExpNeededForNextLevel
         _knight.CurrentExp = _knight.CurrentExp.sub(_knight.ExpNeededForNextLevel);
         //add 100exp for next ExpNeededForNextLevel
@@ -76,9 +76,9 @@ contract KnightAdventure is KnightHelper {
         require(ticket.UseLimit >= 1);
         //reduce the UseLimit of ticket by 1
         ticket.UseLimit--;
-        
+
         if (ticket.UseLimit == 0) {
-            delete ticket;
+            ownerTicketCount[msg.sender] = ownerTicketCount[msg.sender].sub(1);
         }
 
         if (knight.Level < maxLevel) {

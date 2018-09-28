@@ -22,6 +22,8 @@ contract KnightTicket {
     
     constructor() internal {
         _createTicket(1);
+        _createTicket(2);
+        _createTicket(3);
     }
     
     function _createTicket(uint8 _gate) internal {

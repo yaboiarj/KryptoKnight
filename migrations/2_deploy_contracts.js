@@ -1,5 +1,5 @@
-var KnightAdventure = artifacts.require("./KnightAdventure.sol");
+var KnightContract = artifacts.require("./KnightMarket.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(KnightAdventure);
+  deployer.deploy(KnightContract);
 };

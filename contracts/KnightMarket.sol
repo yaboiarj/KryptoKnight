@@ -24,6 +24,8 @@ contract KnightMarket is TicketMarket {
         });
         marketKnights.push(market);
         knights[_knightId].isInMarket = true;
+        //reduce owner knight count by 1 so when function getKnightsByOwner call, it will return the new int array of index
+        ownerKnightCount[msg.sender] = ownerKnightCount[msg.sender].sub(1);
         totalKnightsInMarket = totalKnightsInMarket.add(1);
     }
     
@@ -42,7 +44,6 @@ contract KnightMarket is TicketMarket {
     }
     
     function _transferKnightToBuyer(address _to, uint _knightId) private {
-        ownerKnightCount[_to] = ownerKnightCount[_to].sub(1);
         ownerKnightCount[msg.sender] = ownerKnightCount[msg.sender].add(1);
         knightIndexToOwner[_knightId] = msg.sender;
     }

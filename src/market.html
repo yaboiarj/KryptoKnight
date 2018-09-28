@@ -21,23 +21,19 @@
     </ul>
   </nav>
 
-  <div class="search-container">
-    <div class="col-sm-4 col-sm-push-4">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="input-group">
-            <input id="search" type="text" class="form-control" placeholder="Search index number...">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" onclick="App.search($('#search').val())">Go!</button>
-            </span>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-sm-push-2">
+      <div id="alert" class="alert">
+        <!--required metamask-->
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12 col-sm-8 col-sm-push-2">
-        <table id="search-table" class="table table-bordered table-striped">
+      <div id="loader">
+        <!--loading message for inventory-->
+      </div>
+      <div id="account-error" class="alert">
+        <!--no account detected-->
+      </div>
+      <div>
+        <table id="market-table" class="table table-bordered table-striped">
           <thead>
             <tr>
               <th>Knight #</th>
@@ -45,11 +41,14 @@
               <th>Level</th>
               <th>Exp</th>
               <th>Title</th>
+              <th>Price (ETH)</th>
+              <th>Seller</th>
+              <th>Buy Knight</th>
             </tr>
           </thead>
-          <div style="margin-top:20px">
-              <h3 class="text-muted text-center" style="padding-bottom: 20px">Knight Result</h3>
-            <tbody id="search-knight">
+          <div>
+            <h3 class="text-muted text-center" style="padding-bottom: 20px">Knights Market</h3>
+            <tbody id="market-knight">
               <!--search knight result-->
             </tbody>
           </div>
@@ -60,24 +59,27 @@
     <div class="row">
       <div class="col-xs-12 col-sm-8 col-sm-push-2">
         <div id="content-ticket" style="display: none;">
-          <h3 class="text-muted text-center" style="padding-bottom: 20px">Ticket Result</h3>
-          <div id="search-ticket" class="row">
+          <h3 class="text-muted text-center" style="padding-bottom: 20px">Tickets Market</h3>
+          <div id="market-ticket" class="row">
             <!-- TICKETS LOAD HERE -->
           </div>
           <hr />
-          <div id="search-ticket-template" style="display: none;">
-            <div class="col-lg-4 col-sm-offset-4">
+          <div id="market-ticket-template" style="display: none;">
+            <div class="col-sm-6 col-md-4 col-lg-3">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title-ticket"></h4>
                 </div>
                 <div class="panel-body">
-                  <img alt="image" class="img-rounded img-center" style="width: 100%;" src="images/ticket-1.png"
+                  <img alt="image" class="img-rounded img-center" style="width: 100%;" src="images/ticket.png"
                     data-holder-rendered="true">
                   <br /><br />
                   <strong>Gate</strong>: <span class="ticket-gate"></span><br />
                   <strong>Use Limit</strong>: <span class="ticket-use-limit"></span><br />
-                  <strong>Description</strong>: <span class="ticket-description"></span><br /><br />
+                  <strong>Description</strong>: <span class="ticket-description"></span><br />
+                  <strong>Price</strong>: <span class="ticket-price"></span><br />
+                  <strong>Seller</strong>: <span class="ticket-seller"></span><br />
+                  <button class="btn btn-default btn-adopt" type="button">Buy</button>
                 </div>
               </div>
             </div>

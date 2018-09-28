@@ -43,20 +43,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\r\n\r\nimport \"./SafeMath.sol\";\r\n\r\ncontract KnightTicket {\r\n\r\n    struct Ticket {\r\n        uint8 Gate;\r\n        uint8 UseLimit;\r\n        string Description;\r\n    }\r\n\r\n    Ticket[] tickets;\r\n\r\n    mapping (uint => address) public ticketIndexToOwner;\r\n    mapping (address => uint) ownerTicketCount;\r\n\r\n    using SafeMath for uint;\r\n    \r\n    event NewTicket(uint indexed ticketId);\r\n    \r\n    constructor() internal {\r\n        _createTicket(1);\r\n        _createTicket(2);\r\n        _createTicket(3);\r\n    }\r\n    \r\n    function _createTicket(uint8 _gate) internal {\r\n        Ticket memory ticket = Ticket({\r\n            Gate: _gate,\r\n            UseLimit: 5,\r\n            Description: \"Required to access the dungeon gate.\"\r\n        });\r\n        uint id = tickets.push(ticket) - 1;\r\n        ticketIndexToOwner[id] = msg.sender;\r\n        ownerTicketCount[msg.sender] = ownerTicketCount[msg.sender].add(1);\r\n        emit NewTicket(id);\r\n    }\r\n}",
+  "source": "pragma solidity ^0.4.24;\r\n\r\nimport \"./SafeMath.sol\";\r\n\r\ncontract KnightTicket {\r\n\r\n    struct Ticket {\r\n        uint8 Gate;\r\n        uint8 UseLimit;\r\n        string Description;\r\n        bool isInMarket;\r\n    }\r\n\r\n    Ticket[] tickets;\r\n\r\n    mapping (uint => address) public ticketIndexToOwner;\r\n    mapping (address => uint) ownerTicketCount;\r\n\r\n    using SafeMath for uint;\r\n    \r\n    event NewTicket(uint indexed ticketId);\r\n    \r\n    constructor() internal {\r\n        _createTicket(1);\r\n        _createTicket(2);\r\n        _createTicket(3);\r\n    }\r\n    \r\n    function _createTicket(uint8 _gate) internal {\r\n        Ticket memory ticket = Ticket({\r\n            Gate: _gate,\r\n            UseLimit: 5,\r\n            Description: \"Required to access the dungeon gate.\",\r\n            isInMarket: false\r\n        });\r\n        uint id = tickets.push(ticket) - 1;\r\n        ticketIndexToOwner[id] = msg.sender;\r\n        ownerTicketCount[msg.sender] = ownerTicketCount[msg.sender].add(1);\r\n        emit NewTicket(id);\r\n    }\r\n}",
   "sourcePath": "C:\\Users\\arj\\Desktop\\Blockchain Project\\Dapp\\KryptoKnight-v2\\KryptoKnight\\contracts\\KnightTicket.sol",
   "ast": {
     "absolutePath": "/C/Users/arj/Desktop/Blockchain Project/Dapp/KryptoKnight-v2/KryptoKnight/contracts/KnightTicket.sol",
     "exportedSymbols": {
       "KnightTicket": [
-        868
+        1184
       ]
     },
-    "id": 869,
+    "id": 1185,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 778,
+        "id": 1091,
         "literals": [
           "solidity",
           "^",
@@ -64,16 +64,16 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:3"
+        "src": "0:24:4"
       },
       {
         "absolutePath": "/C/Users/arj/Desktop/Blockchain Project/Dapp/KryptoKnight-v2/KryptoKnight/contracts/SafeMath.sol",
         "file": "./SafeMath.sol",
-        "id": 779,
+        "id": 1092,
         "nodeType": "ImportDirective",
-        "scope": 869,
-        "sourceUnit": 1311,
-        "src": "28:24:3",
+        "scope": 1185,
+        "sourceUnit": 1627,
+        "src": "28:24:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -83,24 +83,24 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 868,
+        "id": 1184,
         "linearizedBaseContracts": [
-          868
+          1184
         ],
         "name": "KnightTicket",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "KnightTicket.Ticket",
-            "id": 786,
+            "id": 1101,
             "members": [
               {
                 "constant": false,
-                "id": 781,
+                "id": 1094,
                 "name": "Gate",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "112:10:3",
+                "scope": 1101,
+                "src": "112:10:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -108,10 +108,10 @@
                   "typeString": "uint8"
                 },
                 "typeName": {
-                  "id": 780,
+                  "id": 1093,
                   "name": "uint8",
                   "nodeType": "ElementaryTypeName",
-                  "src": "112:5:3",
+                  "src": "112:5:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint8",
                     "typeString": "uint8"
@@ -122,11 +122,11 @@
               },
               {
                 "constant": false,
-                "id": 783,
+                "id": 1096,
                 "name": "UseLimit",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "133:14:3",
+                "scope": 1101,
+                "src": "133:14:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -134,10 +134,10 @@
                   "typeString": "uint8"
                 },
                 "typeName": {
-                  "id": 782,
+                  "id": 1095,
                   "name": "uint8",
                   "nodeType": "ElementaryTypeName",
-                  "src": "133:5:3",
+                  "src": "133:5:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint8",
                     "typeString": "uint8"
@@ -148,11 +148,11 @@
               },
               {
                 "constant": false,
-                "id": 785,
+                "id": 1098,
                 "name": "Description",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "158:18:3",
+                "scope": 1101,
+                "src": "158:18:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -160,13 +160,39 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 784,
+                  "id": 1097,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
-                  "src": "158:6:3",
+                  "src": "158:6:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_string_storage_ptr",
                     "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1100,
+                "name": "isInMarket",
+                "nodeType": "VariableDeclaration",
+                "scope": 1101,
+                "src": "187:15:4",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1099,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "187:4:4",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
                   }
                 },
                 "value": null,
@@ -175,42 +201,42 @@
             ],
             "name": "Ticket",
             "nodeType": "StructDefinition",
-            "scope": 868,
-            "src": "87:97:3",
+            "scope": 1184,
+            "src": "87:123:4",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 789,
+            "id": 1104,
             "name": "tickets",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "192:16:3",
+            "scope": 1184,
+            "src": "218:16:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage",
+              "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage",
               "typeString": "struct KnightTicket.Ticket[]"
             },
             "typeName": {
               "baseType": {
                 "contractScope": null,
-                "id": 787,
+                "id": 1102,
                 "name": "Ticket",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 786,
-                "src": "192:6:3",
+                "referencedDeclaration": 1101,
+                "src": "218:6:4",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Ticket_$786_storage_ptr",
+                  "typeIdentifier": "t_struct$_Ticket_$1101_storage_ptr",
                   "typeString": "struct KnightTicket.Ticket"
                 }
               },
-              "id": 788,
+              "id": 1103,
               "length": null,
               "nodeType": "ArrayTypeName",
-              "src": "192:8:3",
+              "src": "218:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage_ptr",
+                "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage_ptr",
                 "typeString": "struct KnightTicket.Ticket[]"
               }
             },
@@ -219,11 +245,11 @@
           },
           {
             "constant": false,
-            "id": 793,
+            "id": 1108,
             "name": "ticketIndexToOwner",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "217:51:3",
+            "scope": 1184,
+            "src": "243:51:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -231,28 +257,28 @@
               "typeString": "mapping(uint256 => address)"
             },
             "typeName": {
-              "id": 792,
+              "id": 1107,
               "keyType": {
-                "id": 790,
+                "id": 1105,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "226:4:3",
+                "src": "252:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
                 }
               },
               "nodeType": "Mapping",
-              "src": "217:25:3",
+              "src": "243:25:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                 "typeString": "mapping(uint256 => address)"
               },
               "valueType": {
-                "id": 791,
+                "id": 1106,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "234:7:3",
+                "src": "260:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
@@ -264,11 +290,11 @@
           },
           {
             "constant": false,
-            "id": 797,
+            "id": 1112,
             "name": "ownerTicketCount",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "275:42:3",
+            "scope": 1184,
+            "src": "301:42:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -276,28 +302,28 @@
               "typeString": "mapping(address => uint256)"
             },
             "typeName": {
-              "id": 796,
+              "id": 1111,
               "keyType": {
-                "id": 794,
+                "id": 1109,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "284:7:3",
+                "src": "310:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "275:25:3",
+              "src": "301:25:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
               },
               "valueType": {
-                "id": 795,
+                "id": 1110,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "295:4:3",
+                "src": "321:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -308,26 +334,26 @@
             "visibility": "internal"
           },
           {
-            "id": 800,
+            "id": 1115,
             "libraryName": {
               "contractScope": null,
-              "id": 798,
+              "id": 1113,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1022,
-              "src": "332:8:3",
+              "referencedDeclaration": 1338,
+              "src": "358:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1022",
+                "typeIdentifier": "t_contract$_SafeMath_$1338",
                 "typeString": "library SafeMath"
               }
             },
             "nodeType": "UsingForDirective",
-            "src": "326:24:3",
+            "src": "352:24:4",
             "typeName": {
-              "id": 799,
+              "id": 1114,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "345:4:3",
+              "src": "371:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -337,21 +363,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 804,
+            "id": 1119,
             "name": "NewTicket",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 803,
+              "id": 1118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 802,
+                  "id": 1117,
                   "indexed": true,
                   "name": "ticketId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 804,
-                  "src": "378:21:3",
+                  "scope": 1119,
+                  "src": "404:21:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -359,10 +385,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 801,
+                    "id": 1116,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "378:4:3",
+                    "src": "404:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -372,15 +398,15 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "377:23:3"
+              "src": "403:23:4"
             },
-            "src": "362:39:3"
+            "src": "388:39:4"
           },
           {
             "body": {
-              "id": 819,
+              "id": 1134,
               "nodeType": "Block",
-              "src": "436:89:3",
+              "src": "462:89:4",
               "statements": [
                 {
                   "expression": {
@@ -389,14 +415,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "31",
-                        "id": 808,
+                        "id": 1123,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "461:1:3",
+                        "src": "487:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_1_by_1",
@@ -412,18 +438,18 @@
                           "typeString": "int_const 1"
                         }
                       ],
-                      "id": 807,
+                      "id": 1122,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "447:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "473:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 809,
+                    "id": 1124,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -431,15 +457,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "447:16:3",
+                    "src": "473:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 810,
+                  "id": 1125,
                   "nodeType": "ExpressionStatement",
-                  "src": "447:16:3"
+                  "src": "473:16:4"
                 },
                 {
                   "expression": {
@@ -448,14 +474,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "32",
-                        "id": 812,
+                        "id": 1127,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "488:1:3",
+                        "src": "514:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_2_by_1",
@@ -471,18 +497,18 @@
                           "typeString": "int_const 2"
                         }
                       ],
-                      "id": 811,
+                      "id": 1126,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "474:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "500:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 813,
+                    "id": 1128,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -490,15 +516,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "474:16:3",
+                    "src": "500:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 814,
+                  "id": 1129,
                   "nodeType": "ExpressionStatement",
-                  "src": "474:16:3"
+                  "src": "500:16:4"
                 },
                 {
                   "expression": {
@@ -507,14 +533,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "33",
-                        "id": 816,
+                        "id": 1131,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "515:1:3",
+                        "src": "541:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_3_by_1",
@@ -530,18 +556,18 @@
                           "typeString": "int_const 3"
                         }
                       ],
-                      "id": 815,
+                      "id": 1130,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "501:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "527:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 817,
+                    "id": 1132,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -549,20 +575,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "501:16:3",
+                    "src": "527:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 818,
+                  "id": 1133,
                   "nodeType": "ExpressionStatement",
-                  "src": "501:16:3"
+                  "src": "527:16:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 820,
+            "id": 1135,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -570,57 +596,57 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 805,
+              "id": 1120,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "424:2:3"
+              "src": "450:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 806,
+              "id": 1121,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "436:0:3"
+              "src": "462:0:4"
             },
-            "scope": 868,
-            "src": "413:112:3",
+            "scope": 1184,
+            "src": "439:112:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 866,
+              "id": 1182,
               "nodeType": "Block",
-              "src": "582:376:3",
+              "src": "608:408:4",
               "statements": [
                 {
                   "assignments": [
-                    826
+                    1141
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 826,
+                      "id": 1141,
                       "name": "ticket",
                       "nodeType": "VariableDeclaration",
-                      "scope": 867,
-                      "src": "593:20:3",
+                      "scope": 1183,
+                      "src": "619:20:4",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                        "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                         "typeString": "struct KnightTicket.Ticket"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 825,
+                        "id": 1140,
                         "name": "Ticket",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 786,
-                        "src": "593:6:3",
+                        "referencedDeclaration": 1101,
+                        "src": "619:6:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Ticket_$786_storage_ptr",
+                          "typeIdentifier": "t_struct$_Ticket_$1101_storage_ptr",
                           "typeString": "struct KnightTicket.Ticket"
                         }
                       },
@@ -628,18 +654,18 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 832,
+                  "id": 1148,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 828,
+                        "id": 1143,
                         "name": "_gate",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 822,
-                        "src": "644:5:3",
+                        "referencedDeclaration": 1137,
+                        "src": "670:5:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
@@ -648,14 +674,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "35",
-                        "id": 829,
+                        "id": 1144,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "674:1:3",
+                        "src": "700:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_5_by_1",
@@ -666,36 +692,54 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "526571756972656420746f20616363657373207468652064756e67656f6e20676174652e",
-                        "id": 830,
+                        "id": 1145,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "703:38:3",
+                        "src": "729:38:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_cfc1120d5cc00535f3d37142dd58c280815cb21de37f366788a5369f9c49d1f0",
                           "typeString": "literal_string \"Required to access the dungeon gate.\""
                         },
                         "value": "Required to access the dungeon gate."
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "66616c7365",
+                        "id": 1146,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "bool",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "794:5:4",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "value": "false"
                       }
                     ],
                     "expression": {
                       "argumentTypes": null,
-                      "id": 827,
+                      "id": 1142,
                       "name": "Ticket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 786,
-                      "src": "616:6:3",
+                      "referencedDeclaration": 1101,
+                      "src": "642:6:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_struct$_Ticket_$786_storage_ptr_$",
+                        "typeIdentifier": "t_type$_t_struct$_Ticket_$1101_storage_ptr_$",
                         "typeString": "type(struct KnightTicket.Ticket storage pointer)"
                       }
                     },
-                    "id": 831,
+                    "id": 1147,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -704,30 +748,31 @@
                     "names": [
                       "Gate",
                       "UseLimit",
-                      "Description"
+                      "Description",
+                      "isInMarket"
                     ],
                     "nodeType": "FunctionCall",
-                    "src": "616:137:3",
+                    "src": "642:169:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Ticket_$786_memory",
+                      "typeIdentifier": "t_struct$_Ticket_$1101_memory",
                       "typeString": "struct KnightTicket.Ticket memory"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "593:160:3"
+                  "src": "619:192:4"
                 },
                 {
                   "assignments": [
-                    834
+                    1150
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 834,
+                      "id": 1150,
                       "name": "id",
                       "nodeType": "VariableDeclaration",
-                      "scope": 867,
-                      "src": "764:7:3",
+                      "scope": 1183,
+                      "src": "822:7:4",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -735,10 +780,10 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 833,
+                        "id": 1149,
                         "name": "uint",
                         "nodeType": "ElementaryTypeName",
-                        "src": "764:4:3",
+                        "src": "822:4:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -748,14 +793,14 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 841,
+                  "id": 1157,
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 840,
+                    "id": 1156,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -765,14 +810,14 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 837,
+                          "id": 1153,
                           "name": "ticket",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 826,
-                          "src": "787:6:3",
+                          "referencedDeclaration": 1141,
+                          "src": "845:6:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                            "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                             "typeString": "struct KnightTicket.Ticket memory"
                           }
                         }
@@ -780,24 +825,24 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                            "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                             "typeString": "struct KnightTicket.Ticket memory"
                           }
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 835,
+                          "id": 1151,
                           "name": "tickets",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 789,
-                          "src": "774:7:3",
+                          "referencedDeclaration": 1104,
+                          "src": "832:7:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage",
+                            "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage",
                             "typeString": "struct KnightTicket.Ticket storage ref[] storage ref"
                           }
                         },
-                        "id": 836,
+                        "id": 1152,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -805,13 +850,13 @@
                         "memberName": "push",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "774:12:3",
+                        "src": "832:12:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_arraypush_nonpayable$_t_struct$_Ticket_$786_storage_$returns$_t_uint256_$",
+                          "typeIdentifier": "t_function_arraypush_nonpayable$_t_struct$_Ticket_$1101_storage_$returns$_t_uint256_$",
                           "typeString": "function (struct KnightTicket.Ticket storage ref) returns (uint256)"
                         }
                       },
-                      "id": 838,
+                      "id": 1154,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -819,7 +864,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "774:20:3",
+                      "src": "832:20:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -830,14 +875,14 @@
                     "rightExpression": {
                       "argumentTypes": null,
                       "hexValue": "31",
-                      "id": 839,
+                      "id": 1155,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "797:1:3",
+                      "src": "855:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
@@ -845,19 +890,19 @@
                       },
                       "value": "1"
                     },
-                    "src": "774:24:3",
+                    "src": "832:24:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "764:34:3"
+                  "src": "822:34:4"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 847,
+                    "id": 1163,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -866,26 +911,26 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 842,
+                        "id": 1158,
                         "name": "ticketIndexToOwner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 793,
-                        "src": "809:18:3",
+                        "referencedDeclaration": 1108,
+                        "src": "867:18:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                           "typeString": "mapping(uint256 => address)"
                         }
                       },
-                      "id": 844,
+                      "id": 1160,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 843,
+                        "id": 1159,
                         "name": "id",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 834,
-                        "src": "828:2:3",
+                        "referencedDeclaration": 1150,
+                        "src": "886:2:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -896,7 +941,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "809:22:3",
+                      "src": "867:22:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -908,18 +953,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 845,
+                        "id": 1161,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1325,
-                        "src": "834:3:3",
+                        "referencedDeclaration": 1918,
+                        "src": "892:3:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 846,
+                      "id": 1162,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -927,26 +972,26 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "834:10:3",
+                      "src": "892:10:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "809:35:3",
+                    "src": "867:35:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 848,
+                  "id": 1164,
                   "nodeType": "ExpressionStatement",
-                  "src": "809:35:3"
+                  "src": "867:35:4"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 860,
+                    "id": 1176,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -955,34 +1000,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 849,
+                        "id": 1165,
                         "name": "ownerTicketCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 797,
-                        "src": "855:16:3",
+                        "referencedDeclaration": 1112,
+                        "src": "913:16:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 852,
+                      "id": 1168,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 850,
+                          "id": 1166,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1325,
-                          "src": "872:3:3",
+                          "referencedDeclaration": 1918,
+                          "src": "930:3:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 851,
+                        "id": 1167,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -990,7 +1035,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "872:10:3",
+                        "src": "930:10:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1001,7 +1046,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "855:28:3",
+                      "src": "913:28:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -1015,14 +1060,14 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 858,
+                          "id": 1174,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "919:1:3",
+                          "src": "977:1:4",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_1_by_1",
@@ -1042,34 +1087,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 853,
+                            "id": 1169,
                             "name": "ownerTicketCount",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 797,
-                            "src": "886:16:3",
+                            "referencedDeclaration": 1112,
+                            "src": "944:16:4",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                               "typeString": "mapping(address => uint256)"
                             }
                           },
-                          "id": 856,
+                          "id": 1172,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 854,
+                              "id": 1170,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1325,
-                              "src": "903:3:3",
+                              "referencedDeclaration": 1918,
+                              "src": "961:3:4",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 855,
+                            "id": 1171,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1077,7 +1122,7 @@
                             "memberName": "sender",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "903:10:3",
+                            "src": "961:10:4",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -1088,27 +1133,27 @@
                           "isPure": false,
                           "lValueRequested": false,
                           "nodeType": "IndexAccess",
-                          "src": "886:28:3",
+                          "src": "944:28:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           }
                         },
-                        "id": 857,
+                        "id": 1173,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "add",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1021,
-                        "src": "886:32:3",
+                        "referencedDeclaration": 1337,
+                        "src": "944:32:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
                           "typeString": "function (uint256,uint256) pure returns (uint256)"
                         }
                       },
-                      "id": 859,
+                      "id": 1175,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1116,21 +1161,21 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "886:35:3",
+                      "src": "944:35:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "855:66:3",
+                    "src": "913:66:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 861,
+                  "id": 1177,
                   "nodeType": "ExpressionStatement",
-                  "src": "855:66:3"
+                  "src": "913:66:4"
                 },
                 {
                   "eventCall": {
@@ -1138,12 +1183,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 863,
+                        "id": 1179,
                         "name": "id",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 834,
-                        "src": "947:2:3",
+                        "referencedDeclaration": 1150,
+                        "src": "1005:2:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1157,18 +1202,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 862,
+                      "id": 1178,
                       "name": "NewTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 804,
-                      "src": "937:9:3",
+                      "referencedDeclaration": 1119,
+                      "src": "995:9:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$returns$__$",
                         "typeString": "function (uint256)"
                       }
                     },
-                    "id": 864,
+                    "id": 1180,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1176,20 +1221,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "937:13:3",
+                    "src": "995:13:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 865,
+                  "id": 1181,
                   "nodeType": "EmitStatement",
-                  "src": "932:18:3"
+                  "src": "990:18:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 867,
+            "id": 1183,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1197,16 +1242,16 @@
             "name": "_createTicket",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 823,
+              "id": 1138,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 822,
+                  "id": 1137,
                   "name": "_gate",
                   "nodeType": "VariableDeclaration",
-                  "scope": 867,
-                  "src": "560:11:3",
+                  "scope": 1183,
+                  "src": "586:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1214,10 +1259,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 821,
+                    "id": 1136,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "560:5:3",
+                    "src": "586:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -1227,40 +1272,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "559:13:3"
+              "src": "585:13:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 824,
+              "id": 1139,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "582:0:3"
+              "src": "608:0:4"
             },
-            "scope": 868,
-            "src": "537:421:3",
+            "scope": 1184,
+            "src": "563:453:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 869,
-        "src": "56:905:3"
+        "scope": 1185,
+        "src": "56:963:4"
       }
     ],
-    "src": "0:961:3"
+    "src": "0:1019:4"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/arj/Desktop/Blockchain Project/Dapp/KryptoKnight-v2/KryptoKnight/contracts/KnightTicket.sol",
     "exportedSymbols": {
       "KnightTicket": [
-        868
+        1184
       ]
     },
-    "id": 869,
+    "id": 1185,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 778,
+        "id": 1091,
         "literals": [
           "solidity",
           "^",
@@ -1268,16 +1313,16 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:3"
+        "src": "0:24:4"
       },
       {
         "absolutePath": "/C/Users/arj/Desktop/Blockchain Project/Dapp/KryptoKnight-v2/KryptoKnight/contracts/SafeMath.sol",
         "file": "./SafeMath.sol",
-        "id": 779,
+        "id": 1092,
         "nodeType": "ImportDirective",
-        "scope": 869,
-        "sourceUnit": 1311,
-        "src": "28:24:3",
+        "scope": 1185,
+        "sourceUnit": 1627,
+        "src": "28:24:4",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -1287,24 +1332,24 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 868,
+        "id": 1184,
         "linearizedBaseContracts": [
-          868
+          1184
         ],
         "name": "KnightTicket",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "KnightTicket.Ticket",
-            "id": 786,
+            "id": 1101,
             "members": [
               {
                 "constant": false,
-                "id": 781,
+                "id": 1094,
                 "name": "Gate",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "112:10:3",
+                "scope": 1101,
+                "src": "112:10:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -1312,10 +1357,10 @@
                   "typeString": "uint8"
                 },
                 "typeName": {
-                  "id": 780,
+                  "id": 1093,
                   "name": "uint8",
                   "nodeType": "ElementaryTypeName",
-                  "src": "112:5:3",
+                  "src": "112:5:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint8",
                     "typeString": "uint8"
@@ -1326,11 +1371,11 @@
               },
               {
                 "constant": false,
-                "id": 783,
+                "id": 1096,
                 "name": "UseLimit",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "133:14:3",
+                "scope": 1101,
+                "src": "133:14:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -1338,10 +1383,10 @@
                   "typeString": "uint8"
                 },
                 "typeName": {
-                  "id": 782,
+                  "id": 1095,
                   "name": "uint8",
                   "nodeType": "ElementaryTypeName",
-                  "src": "133:5:3",
+                  "src": "133:5:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint8",
                     "typeString": "uint8"
@@ -1352,11 +1397,11 @@
               },
               {
                 "constant": false,
-                "id": 785,
+                "id": 1098,
                 "name": "Description",
                 "nodeType": "VariableDeclaration",
-                "scope": 786,
-                "src": "158:18:3",
+                "scope": 1101,
+                "src": "158:18:4",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
@@ -1364,13 +1409,39 @@
                   "typeString": "string"
                 },
                 "typeName": {
-                  "id": 784,
+                  "id": 1097,
                   "name": "string",
                   "nodeType": "ElementaryTypeName",
-                  "src": "158:6:3",
+                  "src": "158:6:4",
                   "typeDescriptions": {
                     "typeIdentifier": "t_string_storage_ptr",
                     "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 1100,
+                "name": "isInMarket",
+                "nodeType": "VariableDeclaration",
+                "scope": 1101,
+                "src": "187:15:4",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 1099,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "187:4:4",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
                   }
                 },
                 "value": null,
@@ -1379,42 +1450,42 @@
             ],
             "name": "Ticket",
             "nodeType": "StructDefinition",
-            "scope": 868,
-            "src": "87:97:3",
+            "scope": 1184,
+            "src": "87:123:4",
             "visibility": "public"
           },
           {
             "constant": false,
-            "id": 789,
+            "id": 1104,
             "name": "tickets",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "192:16:3",
+            "scope": 1184,
+            "src": "218:16:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage",
+              "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage",
               "typeString": "struct KnightTicket.Ticket[]"
             },
             "typeName": {
               "baseType": {
                 "contractScope": null,
-                "id": 787,
+                "id": 1102,
                 "name": "Ticket",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 786,
-                "src": "192:6:3",
+                "referencedDeclaration": 1101,
+                "src": "218:6:4",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Ticket_$786_storage_ptr",
+                  "typeIdentifier": "t_struct$_Ticket_$1101_storage_ptr",
                   "typeString": "struct KnightTicket.Ticket"
                 }
               },
-              "id": 788,
+              "id": 1103,
               "length": null,
               "nodeType": "ArrayTypeName",
-              "src": "192:8:3",
+              "src": "218:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage_ptr",
+                "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage_ptr",
                 "typeString": "struct KnightTicket.Ticket[]"
               }
             },
@@ -1423,11 +1494,11 @@
           },
           {
             "constant": false,
-            "id": 793,
+            "id": 1108,
             "name": "ticketIndexToOwner",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "217:51:3",
+            "scope": 1184,
+            "src": "243:51:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -1435,28 +1506,28 @@
               "typeString": "mapping(uint256 => address)"
             },
             "typeName": {
-              "id": 792,
+              "id": 1107,
               "keyType": {
-                "id": 790,
+                "id": 1105,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "226:4:3",
+                "src": "252:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
                 }
               },
               "nodeType": "Mapping",
-              "src": "217:25:3",
+              "src": "243:25:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                 "typeString": "mapping(uint256 => address)"
               },
               "valueType": {
-                "id": 791,
+                "id": 1106,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "234:7:3",
+                "src": "260:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
@@ -1468,11 +1539,11 @@
           },
           {
             "constant": false,
-            "id": 797,
+            "id": 1112,
             "name": "ownerTicketCount",
             "nodeType": "VariableDeclaration",
-            "scope": 868,
-            "src": "275:42:3",
+            "scope": 1184,
+            "src": "301:42:4",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -1480,28 +1551,28 @@
               "typeString": "mapping(address => uint256)"
             },
             "typeName": {
-              "id": 796,
+              "id": 1111,
               "keyType": {
-                "id": 794,
+                "id": 1109,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
-                "src": "284:7:3",
+                "src": "310:7:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_address",
                   "typeString": "address"
                 }
               },
               "nodeType": "Mapping",
-              "src": "275:25:3",
+              "src": "301:25:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                 "typeString": "mapping(address => uint256)"
               },
               "valueType": {
-                "id": 795,
+                "id": 1110,
                 "name": "uint",
                 "nodeType": "ElementaryTypeName",
-                "src": "295:4:3",
+                "src": "321:4:4",
                 "typeDescriptions": {
                   "typeIdentifier": "t_uint256",
                   "typeString": "uint256"
@@ -1512,26 +1583,26 @@
             "visibility": "internal"
           },
           {
-            "id": 800,
+            "id": 1115,
             "libraryName": {
               "contractScope": null,
-              "id": 798,
+              "id": 1113,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1022,
-              "src": "332:8:3",
+              "referencedDeclaration": 1338,
+              "src": "358:8:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1022",
+                "typeIdentifier": "t_contract$_SafeMath_$1338",
                 "typeString": "library SafeMath"
               }
             },
             "nodeType": "UsingForDirective",
-            "src": "326:24:3",
+            "src": "352:24:4",
             "typeName": {
-              "id": 799,
+              "id": 1114,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
-              "src": "345:4:3",
+              "src": "371:4:4",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -1541,21 +1612,21 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 804,
+            "id": 1119,
             "name": "NewTicket",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 803,
+              "id": 1118,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 802,
+                  "id": 1117,
                   "indexed": true,
                   "name": "ticketId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 804,
-                  "src": "378:21:3",
+                  "scope": 1119,
+                  "src": "404:21:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1563,10 +1634,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 801,
+                    "id": 1116,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "378:4:3",
+                    "src": "404:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1576,15 +1647,15 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "377:23:3"
+              "src": "403:23:4"
             },
-            "src": "362:39:3"
+            "src": "388:39:4"
           },
           {
             "body": {
-              "id": 819,
+              "id": 1134,
               "nodeType": "Block",
-              "src": "436:89:3",
+              "src": "462:89:4",
               "statements": [
                 {
                   "expression": {
@@ -1593,14 +1664,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "31",
-                        "id": 808,
+                        "id": 1123,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "461:1:3",
+                        "src": "487:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_1_by_1",
@@ -1616,18 +1687,18 @@
                           "typeString": "int_const 1"
                         }
                       ],
-                      "id": 807,
+                      "id": 1122,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "447:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "473:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 809,
+                    "id": 1124,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1635,15 +1706,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "447:16:3",
+                    "src": "473:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 810,
+                  "id": 1125,
                   "nodeType": "ExpressionStatement",
-                  "src": "447:16:3"
+                  "src": "473:16:4"
                 },
                 {
                   "expression": {
@@ -1652,14 +1723,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "32",
-                        "id": 812,
+                        "id": 1127,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "488:1:3",
+                        "src": "514:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_2_by_1",
@@ -1675,18 +1746,18 @@
                           "typeString": "int_const 2"
                         }
                       ],
-                      "id": 811,
+                      "id": 1126,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "474:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "500:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 813,
+                    "id": 1128,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1694,15 +1765,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "474:16:3",
+                    "src": "500:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 814,
+                  "id": 1129,
                   "nodeType": "ExpressionStatement",
-                  "src": "474:16:3"
+                  "src": "500:16:4"
                 },
                 {
                   "expression": {
@@ -1711,14 +1782,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "33",
-                        "id": 816,
+                        "id": 1131,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "515:1:3",
+                        "src": "541:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_3_by_1",
@@ -1734,18 +1805,18 @@
                           "typeString": "int_const 3"
                         }
                       ],
-                      "id": 815,
+                      "id": 1130,
                       "name": "_createTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 867,
-                      "src": "501:13:3",
+                      "referencedDeclaration": 1183,
+                      "src": "527:13:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint8_$returns$__$",
                         "typeString": "function (uint8)"
                       }
                     },
-                    "id": 817,
+                    "id": 1132,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1753,20 +1824,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "501:16:3",
+                    "src": "527:16:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 818,
+                  "id": 1133,
                   "nodeType": "ExpressionStatement",
-                  "src": "501:16:3"
+                  "src": "527:16:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 820,
+            "id": 1135,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1774,57 +1845,57 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 805,
+              "id": 1120,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "424:2:3"
+              "src": "450:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 806,
+              "id": 1121,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "436:0:3"
+              "src": "462:0:4"
             },
-            "scope": 868,
-            "src": "413:112:3",
+            "scope": 1184,
+            "src": "439:112:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           },
           {
             "body": {
-              "id": 866,
+              "id": 1182,
               "nodeType": "Block",
-              "src": "582:376:3",
+              "src": "608:408:4",
               "statements": [
                 {
                   "assignments": [
-                    826
+                    1141
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 826,
+                      "id": 1141,
                       "name": "ticket",
                       "nodeType": "VariableDeclaration",
-                      "scope": 867,
-                      "src": "593:20:3",
+                      "scope": 1183,
+                      "src": "619:20:4",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                        "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                         "typeString": "struct KnightTicket.Ticket"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 825,
+                        "id": 1140,
                         "name": "Ticket",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 786,
-                        "src": "593:6:3",
+                        "referencedDeclaration": 1101,
+                        "src": "619:6:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Ticket_$786_storage_ptr",
+                          "typeIdentifier": "t_struct$_Ticket_$1101_storage_ptr",
                           "typeString": "struct KnightTicket.Ticket"
                         }
                       },
@@ -1832,18 +1903,18 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 832,
+                  "id": 1148,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 828,
+                        "id": 1143,
                         "name": "_gate",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 822,
-                        "src": "644:5:3",
+                        "referencedDeclaration": 1137,
+                        "src": "670:5:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint8",
                           "typeString": "uint8"
@@ -1852,14 +1923,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "35",
-                        "id": 829,
+                        "id": 1144,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "674:1:3",
+                        "src": "700:1:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_5_by_1",
@@ -1870,36 +1941,54 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "526571756972656420746f20616363657373207468652064756e67656f6e20676174652e",
-                        "id": 830,
+                        "id": 1145,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "703:38:3",
+                        "src": "729:38:4",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_cfc1120d5cc00535f3d37142dd58c280815cb21de37f366788a5369f9c49d1f0",
                           "typeString": "literal_string \"Required to access the dungeon gate.\""
                         },
                         "value": "Required to access the dungeon gate."
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "66616c7365",
+                        "id": 1146,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "bool",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "794:5:4",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        "value": "false"
                       }
                     ],
                     "expression": {
                       "argumentTypes": null,
-                      "id": 827,
+                      "id": 1142,
                       "name": "Ticket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 786,
-                      "src": "616:6:3",
+                      "referencedDeclaration": 1101,
+                      "src": "642:6:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_struct$_Ticket_$786_storage_ptr_$",
+                        "typeIdentifier": "t_type$_t_struct$_Ticket_$1101_storage_ptr_$",
                         "typeString": "type(struct KnightTicket.Ticket storage pointer)"
                       }
                     },
-                    "id": 831,
+                    "id": 1147,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1908,30 +1997,31 @@
                     "names": [
                       "Gate",
                       "UseLimit",
-                      "Description"
+                      "Description",
+                      "isInMarket"
                     ],
                     "nodeType": "FunctionCall",
-                    "src": "616:137:3",
+                    "src": "642:169:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Ticket_$786_memory",
+                      "typeIdentifier": "t_struct$_Ticket_$1101_memory",
                       "typeString": "struct KnightTicket.Ticket memory"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "593:160:3"
+                  "src": "619:192:4"
                 },
                 {
                   "assignments": [
-                    834
+                    1150
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 834,
+                      "id": 1150,
                       "name": "id",
                       "nodeType": "VariableDeclaration",
-                      "scope": 867,
-                      "src": "764:7:3",
+                      "scope": 1183,
+                      "src": "822:7:4",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -1939,10 +2029,10 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 833,
+                        "id": 1149,
                         "name": "uint",
                         "nodeType": "ElementaryTypeName",
-                        "src": "764:4:3",
+                        "src": "822:4:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -1952,14 +2042,14 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 841,
+                  "id": 1157,
                   "initialValue": {
                     "argumentTypes": null,
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 840,
+                    "id": 1156,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1969,14 +2059,14 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 837,
+                          "id": 1153,
                           "name": "ticket",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 826,
-                          "src": "787:6:3",
+                          "referencedDeclaration": 1141,
+                          "src": "845:6:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                            "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                             "typeString": "struct KnightTicket.Ticket memory"
                           }
                         }
@@ -1984,24 +2074,24 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_struct$_Ticket_$786_memory_ptr",
+                            "typeIdentifier": "t_struct$_Ticket_$1101_memory_ptr",
                             "typeString": "struct KnightTicket.Ticket memory"
                           }
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 835,
+                          "id": 1151,
                           "name": "tickets",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 789,
-                          "src": "774:7:3",
+                          "referencedDeclaration": 1104,
+                          "src": "832:7:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_array$_t_struct$_Ticket_$786_storage_$dyn_storage",
+                            "typeIdentifier": "t_array$_t_struct$_Ticket_$1101_storage_$dyn_storage",
                             "typeString": "struct KnightTicket.Ticket storage ref[] storage ref"
                           }
                         },
-                        "id": 836,
+                        "id": 1152,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2009,13 +2099,13 @@
                         "memberName": "push",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "774:12:3",
+                        "src": "832:12:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_arraypush_nonpayable$_t_struct$_Ticket_$786_storage_$returns$_t_uint256_$",
+                          "typeIdentifier": "t_function_arraypush_nonpayable$_t_struct$_Ticket_$1101_storage_$returns$_t_uint256_$",
                           "typeString": "function (struct KnightTicket.Ticket storage ref) returns (uint256)"
                         }
                       },
-                      "id": 838,
+                      "id": 1154,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2023,7 +2113,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "774:20:3",
+                      "src": "832:20:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2034,14 +2124,14 @@
                     "rightExpression": {
                       "argumentTypes": null,
                       "hexValue": "31",
-                      "id": 839,
+                      "id": 1155,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "797:1:3",
+                      "src": "855:1:4",
                       "subdenomination": null,
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_1_by_1",
@@ -2049,19 +2139,19 @@
                       },
                       "value": "1"
                     },
-                    "src": "774:24:3",
+                    "src": "832:24:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "764:34:3"
+                  "src": "822:34:4"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 847,
+                    "id": 1163,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2070,26 +2160,26 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 842,
+                        "id": 1158,
                         "name": "ticketIndexToOwner",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 793,
-                        "src": "809:18:3",
+                        "referencedDeclaration": 1108,
+                        "src": "867:18:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
                           "typeString": "mapping(uint256 => address)"
                         }
                       },
-                      "id": 844,
+                      "id": 1160,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 843,
+                        "id": 1159,
                         "name": "id",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 834,
-                        "src": "828:2:3",
+                        "referencedDeclaration": 1150,
+                        "src": "886:2:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2100,7 +2190,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "809:22:3",
+                      "src": "867:22:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
@@ -2112,18 +2202,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 845,
+                        "id": 1161,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1325,
-                        "src": "834:3:3",
+                        "referencedDeclaration": 1918,
+                        "src": "892:3:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 846,
+                      "id": 1162,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2131,26 +2221,26 @@
                       "memberName": "sender",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": null,
-                      "src": "834:10:3",
+                      "src": "892:10:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "src": "809:35:3",
+                    "src": "867:35:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
-                  "id": 848,
+                  "id": 1164,
                   "nodeType": "ExpressionStatement",
-                  "src": "809:35:3"
+                  "src": "867:35:4"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 860,
+                    "id": 1176,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2159,34 +2249,34 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 849,
+                        "id": 1165,
                         "name": "ownerTicketCount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 797,
-                        "src": "855:16:3",
+                        "referencedDeclaration": 1112,
+                        "src": "913:16:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 852,
+                      "id": 1168,
                       "indexExpression": {
                         "argumentTypes": null,
                         "expression": {
                           "argumentTypes": null,
-                          "id": 850,
+                          "id": 1166,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1325,
-                          "src": "872:3:3",
+                          "referencedDeclaration": 1918,
+                          "src": "930:3:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
                             "typeString": "msg"
                           }
                         },
-                        "id": 851,
+                        "id": 1167,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2194,7 +2284,7 @@
                         "memberName": "sender",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": null,
-                        "src": "872:10:3",
+                        "src": "930:10:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2205,7 +2295,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "855:28:3",
+                      "src": "913:28:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
@@ -2219,14 +2309,14 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 858,
+                          "id": 1174,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "919:1:3",
+                          "src": "977:1:4",
                           "subdenomination": null,
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_1_by_1",
@@ -2246,34 +2336,34 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 853,
+                            "id": 1169,
                             "name": "ownerTicketCount",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 797,
-                            "src": "886:16:3",
+                            "referencedDeclaration": 1112,
+                            "src": "944:16:4",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                               "typeString": "mapping(address => uint256)"
                             }
                           },
-                          "id": 856,
+                          "id": 1172,
                           "indexExpression": {
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 854,
+                              "id": 1170,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1325,
-                              "src": "903:3:3",
+                              "referencedDeclaration": 1918,
+                              "src": "961:3:4",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 855,
+                            "id": 1171,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -2281,7 +2371,7 @@
                             "memberName": "sender",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": null,
-                            "src": "903:10:3",
+                            "src": "961:10:4",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -2292,27 +2382,27 @@
                           "isPure": false,
                           "lValueRequested": false,
                           "nodeType": "IndexAccess",
-                          "src": "886:28:3",
+                          "src": "944:28:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           }
                         },
-                        "id": 857,
+                        "id": 1173,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "add",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1021,
-                        "src": "886:32:3",
+                        "referencedDeclaration": 1337,
+                        "src": "944:32:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
                           "typeString": "function (uint256,uint256) pure returns (uint256)"
                         }
                       },
-                      "id": 859,
+                      "id": 1175,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2320,21 +2410,21 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "886:35:3",
+                      "src": "944:35:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "src": "855:66:3",
+                    "src": "913:66:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "id": 861,
+                  "id": 1177,
                   "nodeType": "ExpressionStatement",
-                  "src": "855:66:3"
+                  "src": "913:66:4"
                 },
                 {
                   "eventCall": {
@@ -2342,12 +2432,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 863,
+                        "id": 1179,
                         "name": "id",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 834,
-                        "src": "947:2:3",
+                        "referencedDeclaration": 1150,
+                        "src": "1005:2:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2361,18 +2451,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 862,
+                      "id": 1178,
                       "name": "NewTicket",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 804,
-                      "src": "937:9:3",
+                      "referencedDeclaration": 1119,
+                      "src": "995:9:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_uint256_$returns$__$",
                         "typeString": "function (uint256)"
                       }
                     },
-                    "id": 864,
+                    "id": 1180,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2380,20 +2470,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "937:13:3",
+                    "src": "995:13:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 865,
+                  "id": 1181,
                   "nodeType": "EmitStatement",
-                  "src": "932:18:3"
+                  "src": "990:18:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 867,
+            "id": 1183,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2401,16 +2491,16 @@
             "name": "_createTicket",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 823,
+              "id": 1138,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 822,
+                  "id": 1137,
                   "name": "_gate",
                   "nodeType": "VariableDeclaration",
-                  "scope": 867,
-                  "src": "560:11:3",
+                  "scope": 1183,
+                  "src": "586:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2418,10 +2508,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 821,
+                    "id": 1136,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "560:5:3",
+                    "src": "586:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -2431,27 +2521,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "559:13:3"
+              "src": "585:13:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 824,
+              "id": 1139,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "582:0:3"
+              "src": "608:0:4"
             },
-            "scope": 868,
-            "src": "537:421:3",
+            "scope": 1184,
+            "src": "563:453:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 869,
-        "src": "56:905:3"
+        "scope": 1185,
+        "src": "56:963:4"
       }
     ],
-    "src": "0:961:3"
+    "src": "0:1019:4"
   },
   "compiler": {
     "name": "solc",
@@ -2459,5 +2549,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-09-27T09:33:49.273Z"
+  "updatedAt": "2018-09-28T20:45:57.264Z"
 }

@@ -20,7 +20,7 @@
       <li><a href="inventory.html">Inventory</a></li>
     </ul>
   </nav>
-  <h3 class="text-muted text-center" style="padding-bottom: 20px">Let's go to the adventure!</h3>
+  <h3 class="text-muted text-center" style="padding-bottom: 20px">Let's go on an adventure!</h3>
   <div class="adventure-container">
     <div class="gate-1">
       <img src="images/gate-1.jpg"></img>
@@ -35,7 +35,8 @@
         You may receive one of the following:<br />
         Gate 1 Ticket<br />
         <hr />
-        <button type="button" class="btn btn-primary">Enter Gate 1</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enter-dungeon" onclick="App.getKnightsByOwner(); App.getTicketsByOwner()">Enter
+          Dungeon</button>
     </div>
     <div class="gate-2">
       <img src="images/gate-2.jpg"></img>
@@ -51,7 +52,8 @@
         Gate 1 Ticket<br />
         Gate 2 Ticket</p>
       <hr />
-      <button type="button" class="btn btn-primary">Enter Gate 2</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enter-dungeon" onclick="App.getKnightsByOwner(); App.getTicketsByOwner()">Enter
+        Dungeon</button>
     </div>
     <div class="gate-3">
       <img src="images/gate-3.jpg"></img>
@@ -68,7 +70,38 @@
         Gate 2 Ticket<br />
         Gate 3 Ticket</p>
       <hr />
-      <button type="button" class="btn btn-primary">Enter Gate 3</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#enter-dungeon" onclick="App.getKnightsByOwner(); App.getTicketsByOwner()">Enter
+        Dungeon</button>
+    </div>
+  </div>
+
+  <!--dungeon 1-->
+  <div id="enter-dungeon" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Entering Dungeon Gate</h4>
+        </div>
+        <div class="modal-body">
+          <p>Note: You will need a knight and ticket to proceed.</p>
+          <p>Knight will enter a dungeon gate x with the corresponding ticket gate number.</p>
+          <p>Knight cannot enter the dungeon if the knight is still ongoing on a current dungeon. </p>
+          <p>Complete Dungeon Run Time: 5 seconds</p>
+          <form onSubmit="App.enterDungeon(); return false;">
+            <div class="form-group">
+              <label for="knightsSelect">Select Knight Number</label>
+              <select class="form-control" id="knightsSelect">
+              </select>
+              <label for="ticketsSelect">Select Ticket Number</label>
+              <select class="form-control" id="ticketsSelect">
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Confirm Enter</button>
+            <hr />
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 

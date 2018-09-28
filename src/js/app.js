@@ -2,12 +2,13 @@ App = {
   web3Provider: null,
   contracts: {},
   account: '0x0',
-  knightAdventureInstance: null,
+  knightContractInstance: null,
 
   init: function () {
     $("#loader").hide();
     $("#account-error").hide();
     $("#alert").hide();
+    $("#market-table").hide();
     return App.initWeb3();
   },
 
@@ -25,11 +26,11 @@ App = {
   },
 
   initContract: function () {
-    $.getJSON("KnightAdventure.json", function (knightAdventure) {
+    $.getJSON("KnightMarket.json", function (knightContract) {
       // instantiate a new truffle contract from the artifact
-      App.contracts.KnightAdventure = TruffleContract(knightAdventure);
+      App.contracts.KnightContract = TruffleContract(knightContract);
       // connect provider to interact with contract
-      App.contracts.KnightAdventure.setProvider(App.web3Provider);
+      App.contracts.KnightContract.setProvider(App.web3Provider);
 
       return App.initAccount();
     });
@@ -56,94 +57,54 @@ App = {
   },
 
   initContractInstance: function () {
-    App.contracts.KnightAdventure.deployed().then(function (instance) {
-      knightAdventureInstance = instance;
-      return App.loadInventory();
+    App.contracts.KnightContract.deployed().then(function (instance) {
+      knightContractInstance = instance;
+      App.loadMarket();
+      App.loadInventory();
     });
   },
 
-  loadInventory: function () {
-    let loader = $("#loader");
-    loader.append('<p class="text-center">Your inventory is loading... Please wait.</p>');
-    let contentKnight = $("#content-knight");
-    let contentTicket = $("#content-ticket");
-
-    loader.show();
-    contentKnight.hide();
-    contentTicket.hide();
-
-    // load contract data
-    App.contracts.KnightAdventure.deployed().then(function (instance) {
-      knightAdventureInstance = instance;
-
-      let knightsResult = $("#knightsResult");
-      knightsResult.empty();
-
-      knightAdventureInstance.getKnightsByOwner(App.account).then(function (intArray) {
-        for (let i = 0; i < intArray.length; i++) {
-
-          let index = intArray[i].toNumber();
-
-          knightAdventureInstance.getKnightDetails(index).then(function (knight) {
-            knight = knight.toString();
-            knight = knight.split(',');
-
-            let name = knight[0];
-            let level = knight[1];
-            let currExp = knight[2];
-            let neededExp = knight[3];
-            let title = knight[4];
-
-            // Render knight Result
-            let knightTemplate = "<tr><th>" + index + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td></tr>"
-            knightsResult.append(knightTemplate);
-          })
-        }
-      })
-
-      App.getPagination('#mytable');
-      loader.hide();
-      contentKnight.show();
-
-      let ticketsResult = $("#ticketsResult");
-      ticketsResult.empty();
-
-      knightAdventureInstance.getTicketsByOwner(App.account).then(function (intArray) {
-        for (let i = 0; i < intArray.length; i++) {
-
-          let index = intArray[i].toNumber();
-
-          knightAdventureInstance.getTicketDetails(index).then(function (ticket) {
-            ticket = ticket.toString();
-            ticket = ticket.split(',');
-
-            let gate = ticket[0];
-            let useLimit = ticket[1];
-            let description = ticket[2];
-
-            // Render ticket result
-            let ticketTemplate = $("#ticketTemplate");
-            ticketTemplate.find('.panel-title-ticket').text('Ticket #' + index);
-            ticketTemplate.find('.ticket-gate').text(gate);
-            ticketTemplate.find('.ticket-use-limit').text(useLimit);
-            ticketTemplate.find('.ticket-description').text(description);
-            ticketsResult.append(ticketTemplate.html());
-          })
-        }
-      })
-      loader.hide();
-      contentTicket.show();
+  initControlFunctions: function () {
+    $('#myModal').on('show.bs.modal', function (e) {
+      let id = e.relatedTarget.id;
     })
   },
 
-  search: function (index) {
-    $("#search-knight").empty();
-    $("#search-ticket").empty();
+  loadMarket: function () {
+    $("#market-knight").empty();
+    $("#market-ticket").empty();
 
-    if (Math.floor(index) == index) {
-      knightAdventureInstance.getKnightDetails(index).then(function (knight) {
-        knight = knight.toString();
-        knight = knight.split(',');
+    knightContractInstance.getMarketKnights().then(function (intArray) {
+      for (let i = 0; i < intArray.length; i++) {
+
+        //market knight index
+        let index = intArray[i];
+
+        App.getMarketKnightDetails(index);
+      }
+    });
+
+    $("#market-table").show();
+
+    knightContractInstance.getMarketTickets().then(function (intArray) {
+      for (let i = 0; i < intArray.length; i++) {
+        let index = intArray[i];
+
+        App.getMarketTicketDetails(index);
+      }
+    });
+  },
+
+  getMarketKnightDetails: function (index) {
+    knightContractInstance.getMarketKnightDetails(index).then(function (marketKnight) {
+      marketKnight = marketKnight.toString();
+      marketKnight = marketKnight.split(',');
+
+      let seller = marketKnight[0];
+      let knightId = marketKnight[1];
+      let price = marketKnight[2];
+
+      knightContractInstance.getKnightDetails(knightId).then(function (knight) {
 
         let name = knight[0];
         let level = knight[1];
@@ -152,11 +113,22 @@ App = {
         let title = knight[4];
 
         // Render knight Result
-        let knightTemplate = "<tr><th>" + index + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td></tr>"
-        $("#search-knight").append(knightTemplate);
+        let marketKnightTemplate = "<tr><th>" + knightId + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td><td>" + App.weiToEther(price) + "</td><td>" + seller + "</td><td>" + '<button id="buy-knight" value="' + index + ', ' + price + `"type="button" onclick="App.buyKnight(this)" class="btn btn-default">Buy</button> </td></tr>`
+        $("#market-knight").append(marketKnightTemplate);
       })
+    })
+  },
 
-      knightAdventureInstance.getTicketDetails(index).then(function (ticket) {
+  getMarketTicketDetails: function (index) {
+    knightContractInstance.getMarketTicketDetails(index).then(function (marketTicket) {
+      marketTicket = marketTicket.toString();
+      marketTicket = marketTicket.split(',');
+
+      let seller = marketTicket[0];
+      let ticketId = marketTicket[1];
+      let price = marketTicket[2];
+
+      knightContractInstance.getTicketDetails(ticketId).then(function (ticket) {
         ticket = ticket.toString();
         ticket = ticket.split(',');
 
@@ -164,73 +136,183 @@ App = {
         let useLimit = ticket[1];
         let description = ticket[2];
 
-        // Render ticket result
-        let ticketTemplate = $("#search-ticket-template");
-        ticketTemplate.find('.panel-title-ticket').text('Ticket #' + index);
-        ticketTemplate.find('.ticket-gate').text(gate);
-        ticketTemplate.find('.ticket-use-limit').text(useLimit);
-        ticketTemplate.find('.ticket-description').text(description);
-        $("#search-ticket").append(ticketTemplate.html());
+        // Render knight Result
+        App.displayTicketsMarket(ticketId, gate, useLimit, description, price, seller);
       })
-    }
+    })
   },
 
-  handleAdopt: function (event) {
-    event.preventDefault();
+  loadInventory: function () {
+    let loader = $("#loader");
+    let contentKnight = $("#content-knight");
+    let contentTicket = $("#content-ticket");
 
-    var petId = parseInt($(event.target).data('id'));
+    let knightsResult = $("#knightsResult");
 
-    /*
-     * Replace me...
-     */
+    knightsResult.empty();
+
+    knightContractInstance.getKnightsByOwner(App.account).then(function (intArray) {
+      for (let i = 0; i < intArray.length; i++) {
+
+        let index = intArray[i].toNumber();
+
+        knightContractInstance.getKnightDetails(index).then(function (knight) {
+          knight = knight.toString();
+          knight = knight.split(',');
+
+          let name = knight[0];
+          let level = knight[1];
+          let currExp = knight[2];
+          let neededExp = knight[3];
+          let title = knight[4];
+
+          // Render knight Result
+          let knightTemplate = "<tr><th>" + index + "</th><td>" + name + "</td><td>" + level + "</td><td>" + currExp + ' / ' + neededExp + "</td><td>" + title + "</td></tr>"
+          knightsResult.append(knightTemplate);
+        })
+      }
+    })
+
+    loader.hide();
+    contentKnight.show();
+
+    let ticketsResult = $("#ticketsResult");
+    ticketsResult.empty();
+
+    knightContractInstance.getTicketsByOwner(App.account).then(function (intArray) {
+      for (let i = 0; i < intArray.length; i++) {
+
+        let index = intArray[i].toNumber();
+
+        knightContractInstance.getTicketDetails(index).then(function (ticket) {
+          ticket = ticket.toString();
+          ticket = ticket.split(',');
+
+          let gate = ticket[0];
+          let useLimit = ticket[1];
+          let description = ticket[2];
+
+          // Render ticket result
+          App.displayTicketsInventory(index, gate, useLimit, description);
+        })
+      }
+      loader.hide();
+      contentTicket.show();
+    })
   },
 
-  etherToWei: function(amount) {
+  getKnightsByOwner: function () {
+    knightContractInstance.getKnightsByOwner(App.account).then(function (intArray) {
+      $("#knightsSelect").empty();
+      for (let i = 0; i < intArray.length; i++) {
+        let knightOption = "<option value='" + intArray[i] + "' >" + intArray[i] + "</ option>"
+        $("#knightsSelect").append(knightOption);
+      }
+    });
+  },
+
+  getTicketsByOwner: function () {
+    knightContractInstance.getTicketsByOwner(App.account).then(function (intArray) {
+      $("#ticketsSelect").empty();
+      for (let i = 0; i < intArray.length; i++) {
+        let ticketOption = "<option value='" + intArray[i] + "' >" + intArray[i] + "</option>"
+        $("#ticketsSelect").append(ticketOption);
+      }
+    });
+  },
+
+  sellKnight: function () {
+    let id = $('#knightsSelect').val();
+    let price = $('#knightPrice').val();
+    let priceInEther = App.etherToWei(price);
+    knightContractInstance.sellKnight(id, priceInEther, {
+      from: App.account,
+      gas: 300000
+    }).then(function (result) {
+      console.log(result);
+    });
+  },
+
+  sellTicket: function () {
+    let id = $('#ticketsSelect').val();
+    let price = $('#ticketPrice').val();
+    let priceInEther = App.etherToWei(price);
+    knightContractInstance.sellTicket(id, priceInEther, {
+      from: App.account,
+      gas: 300000
+    }).then(function (result) {
+      console.log(result);
+    });
+  },
+
+  buyKnight: function (element) {
+    element = element.value.toString();
+    let elementVal = element.split(',');
+    let marketId = elementVal[0];
+    let price = elementVal[1];
+    knightContractInstance.buyKnight(marketId, {
+      from: App.account,
+      gas: 300000,
+      value: price
+    }).then(function (result) {
+      console.log(result);
+    });
+  },
+
+  buyTicket: function (element) {
+    element = element.value.toString();
+    let elementVal = element.split(',');
+    let marketId = elementVal[0];
+    let price = elementVal[1];
+    knightContractInstance.buyTicket(marketId, {
+      from: App.account,
+      gas: 300000,
+      value: price
+    }).then(function (result) {
+      console.log(result);
+    });
+  },
+
+  enterDungeon: function () {
+    let knightId = $('#knightsSelect').val();
+    let ticketId = $('#ticketsSelect').val();
+    knightContractInstance.enterDungeon(knightId, ticketId, {
+      from: App.account,
+      gas: 300000,
+    }).then(function (result) {
+      console.log(result);
+    });
+  },
+
+  etherToWei: function (amount) {
     return amount * (10 ** 18);
   },
 
-  getPagination: function (table) {
-    $('#maxRows').on('change', function () {
-      $('.pagination').html('');
-      var trnum = 0;
-      var maxRows = parseInt($(this).val());
-      var totalRows = $(table).find('tbody tr').length;
-      $(table).find('tr:gt(0)').each(function () {
-        trnum++;
-        if (trnum > maxRows) {
+  weiToEther: function (amount) {
+    return amount / (10 ** 18);
+  },
 
-          $(this).hide();
-        }
-        if (trnum <= maxRows) {
-          $(this).show();
-        }
-      });
-      if (totalRows > maxRows) {
-        var pagenum = Math.ceil(totalRows / maxRows);
+  displayTicketsInventory: function (index, gate, useLimit, description) {
+    let ticketTemplate = $("#ticketTemplate");
+    ticketTemplate.find('.panel-title-ticket').text('Ticket #' + index);
+    ticketTemplate.find('.ticket-gate').text(gate);
+    ticketTemplate.find('.ticket-use-limit').text(useLimit);
+    ticketTemplate.find('.ticket-description').text(description);
+    $("#ticketsResult").append(ticketTemplate.html());
+  },
 
-        for (var i = 1; i <= pagenum;) {
-          $('.pagination').append('<li data-page="' + i + '">\
-                        <span>' + i++ + '<span class="sr-only">(current)</span></span>\
-                      </li>').show();
-        }
-      }
-      $('.pagination li:first-child').addClass('active');
-      $('.pagination li').on('click', function () {
-        var pageNum = $(this).attr('data-page');
-        var trIndex = 0;
-        $('.pagination li').removeClass('active');
-        $(this).addClass('active');
-        $(table).find('tr:gt(0)').each(function () {
-          trIndex++;
-
-          if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
-            $(this).hide();
-          } else {
-            $(this).show();
-          }
-        });
-      });
-    });
+  displayTicketsMarket: function (ticketId, gate, useLimit, description, price, seller) {
+    let ticketTemplate = $("#market-ticket-template");
+    ticketTemplate.find('.panel-title-ticket').text('Ticket #' + ticketId);
+    ticketTemplate.find('.ticket-gate').text(gate);
+    ticketTemplate.find('.ticket-use-limit').text(useLimit);
+    ticketTemplate.find('.ticket-description').text(description);
+    ticketTemplate.find('.ticket-price').text(App.weiToEther(price) + ' ETH');
+    ticketTemplate.find('.ticket-seller').text(seller.substring(0, 22) + ' ' + seller.substring(22, 42));
+    ticketTemplate.find('.btn').attr('value', `${ticketId}, ${price}`)
+    ticketTemplate.find('.btn').attr('id', 'buy-ticket');
+    ticketTemplate.find('.btn').attr('onclick', 'App.buyTicket(this)');
+    $("#market-ticket").append(ticketTemplate.html());
   },
 };
 
